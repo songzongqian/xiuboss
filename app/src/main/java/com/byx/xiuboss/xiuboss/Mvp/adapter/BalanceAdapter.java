@@ -36,17 +36,29 @@ public class BalanceAdapter extends RecyclerView.Adapter<BalanceAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.money.setText("- "+lance.get(position).getGet_fee());
+
         String channel = lance.get(position).getChannel();
-        if (channel.equals("alipay")){
-            holder.putforward.setText("提现-支付宝");
+        if (channel.equals("支付宝")){
+            holder.putforward.setText("提现 - 支付宝");
+            holder.money.setText("-"+lance.get(position).getGet_fee());
+            holder.money.setTextColor(0xFF666666);
+        }else if (channel.equals("weixin")){
+            holder.putforward.setText("提现 - 微信");
+            holder.money.setText("-"+lance.get(position).getGet_fee());
+            holder.money.setTextColor(0xFF666666);
+        }else if (channel.equals("银行卡")){
+            holder.putforward.setText("提现 - 银行卡");
+            holder.money.setText("-"+lance.get(position).getGet_fee());
+            holder.money.setTextColor(0xFF666666);
         }else{
-            holder.putforward.setText("提现 - "+lance.get(position).getChannel());
+            holder.putforward.setText("收入-"+lance.get(position).getChannel());
+            holder.money.setText("+"+lance.get(position).getGet_fee());
+            holder.money.setTextColor(0xFFC6A04D);
         }
 
         holder.time.setText(lance.get(position).getRegisterTime());
         int i = Integer.parseInt(lance.get(position).getStatus());
-        if (i==1){
+        if (i==0){
             holder.status.setText("已到账");
             holder.status.setTextColor(0xFF999999);
         }else if (i==2){

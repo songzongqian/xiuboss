@@ -126,7 +126,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.relative_Totalamount)
     RelativeLayout relativeTotalamount;
     private String homeUrl = "https://www.ourdaidai.com/CI/index.php/StoreMy/storeHome";
-    private String popUrl =  "https://www.ourdaidai.com/CI/index.php/StoreMy/reward";
+    private String popUrl = "https://www.ourdaidai.com/CI/index.php/StoreMy/reward";
     private String title;
     private String sid;
     private HomeBean homeBean;
@@ -185,20 +185,26 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
                 Gson gson = new Gson();
                 homeBean = gson.fromJson(data, HomeBean.class);
                 home_title.setText(login_sucess.getString("homeTitle", ""));
                 total_fee.setText(homeBean.getData().getFee().getTotal_fee());
                 customer.setText(homeBean.getData().getFee().getCustomer());
-                Totalamount.setText("今日收款" + homeBean.getData().getTodaySum() + "笔");
+                Totalamount.setText("今日收款" + homeBean.getData().getTodaySum() + "笔,合计");
                 TotalamountMoney.setText(homeBean.getData().getTodayFee() + "元");
                 yesterdayMoney.setText("昨日实时：" + homeBean.getData().getYesterFee() + "元");
                 balanceMoney.setText(homeBean.getData().getAmount().getAmountFee() + "元");
                 midMoney.setText(homeBean.getData().getCurrentGrade().getF2());
                 maxMoney.setText(homeBean.getData().getNextGrade().getF2());
-                dengji.setText("x" + homeBean.getData().getCurrentGrade().getId());
+                String id = homeBean.getData().getCurrentGrade().getId();
+                if (id==null){
+                    dengji.setText("Lv"+"0");
+                }else{
+                    dengji.setText("Lv" + homeBean.getData().getCurrentGrade().getId());
+                }
                 gradeMoney.setText(homeBean.getData().getCurrentGrade().getF4());
-                backwardMoney.setText("x" + homeBean.getData().getNextGrade().getId());
+                backwardMoney.setText("Lv" + homeBean.getData().getNextGrade().getId());
                 differenceMoney.setText(homeBean.getData().getNextDifference());
                 rewardMoney.setText(homeBean.getData().getNextGrade().getF4());
                 ServiceChargeMoney.setText(homeBean.getData().getMonthFee());
@@ -498,6 +504,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                         });
 
                                         dialog.dismiss();
+
                                     }
 
                                     @Override

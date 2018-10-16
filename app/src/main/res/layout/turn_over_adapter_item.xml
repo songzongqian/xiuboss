@@ -79,7 +79,7 @@
         android:layout_width="110px"
         android:layout_height="36px"
         android:layout_below="@id/relativi_one"
-        android:text="加载更多"
+        android:text="查看全部"
         android:textSize="16px"
         android:gravity="center"
         android:background="@drawable/button_shap_xiuxiu"

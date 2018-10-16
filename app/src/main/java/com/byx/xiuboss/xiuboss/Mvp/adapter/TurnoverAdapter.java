@@ -1,6 +1,7 @@
 package com.byx.xiuboss.xiuboss.Mvp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 
 import com.byx.xiuboss.xiuboss.Bean.TurnoverData;
 import com.byx.xiuboss.xiuboss.MainActivity;
+import com.byx.xiuboss.xiuboss.Mvp.activity.TodayMoneyActivity;
 import com.byx.xiuboss.xiuboss.Mvp.net.OkHttpUtils;
 import com.byx.xiuboss.xiuboss.R;
 import com.google.gson.Gson;
@@ -106,11 +108,20 @@ public class TurnoverAdapter extends RecyclerView.Adapter<TurnoverAdapter.ViewHo
             Date date = new Date(lt);
             holder.text_time.setText(simpleDateFormat.format(date));
             holder.text_name.setText(listData.get(position).getNickname());
-            Glide.with(context).load(listData.get(position).getAvatar()).bitmapTransform(new CropCircleTransformation(context)).into(holder.image_item_one);
-            if (position + 1 == listData.size()) {
+            if (listData.get(position).getNickname().equals("微信用户")){
+                Glide.with(context).load(R.mipmap.common_wx_logo).bitmapTransform(new CropCircleTransformation(context)).into(holder.image_item_one);
+            }else if (listData.get(position).getNickname().equals("支付宝用户")) {
+                Glide.with(context).load(R.mipmap.common_ali_logo).bitmapTransform(new CropCircleTransformation(context)).into(holder.image_item_one);
+            }else{
+                Glide.with(context).load(listData.get(position).getAvatar()).bitmapTransform(new CropCircleTransformation(context)).into(holder.image_item_one);
+            }
+
+            if (position ==4) {
                 holder.text_jia.setVisibility(View.VISIBLE);
+
             }else{
                 holder.text_jia.setVisibility(View.GONE);
+
             }
             if (data.getMessage().equals("没有营业额")){
                 holder.relativi_one.setVisibility(View.GONE);
@@ -124,7 +135,7 @@ public class TurnoverAdapter extends RecyclerView.Adapter<TurnoverAdapter.ViewHo
             holder.text_jia.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //请求加载更多的数据
+               /*     //请求加载更多的数据
 
                     share = context.getSharedPreferences("login_sucess",context.MODE_PRIVATE);
                     sid = share.getString("sid", "");
@@ -153,7 +164,7 @@ public class TurnoverAdapter extends RecyclerView.Adapter<TurnoverAdapter.ViewHo
                                         notifyDataSetChanged();
                                     }
 
-                                    if (position + 1 == listData.size()) {
+                                    if (position >=5) {
                                         holder.text_jia.setVisibility(View.VISIBLE);
                                     }else{
                                         holder.text_jia.setVisibility(View.GONE);
@@ -167,7 +178,9 @@ public class TurnoverAdapter extends RecyclerView.Adapter<TurnoverAdapter.ViewHo
                         public void failed(Call call, IOException e) {
 
                         }
-                    });
+                    });*/
+                    Intent intent=new Intent(context, TodayMoneyActivity.class);
+                    context.startActivity(intent);
 
                 }
             });

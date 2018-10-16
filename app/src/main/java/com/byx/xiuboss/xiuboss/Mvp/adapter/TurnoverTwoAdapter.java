@@ -2,6 +2,7 @@ package com.byx.xiuboss.xiuboss.Mvp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,12 +55,13 @@ public class TurnoverTwoAdapter extends RecyclerView.Adapter<TurnoverTwoAdapter.
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         if (holder instanceof ViewHolder){
-            String stat_day = data.get(position).getAddtime();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd");
-            Long aLong = Long.valueOf(stat_day);
-            long lt = new Long(aLong*1000);
-            Date date1 = new Date(lt);
-            holder.text_money.setText(data.get(position).getStat_day()+"收款"+data.get(position).getSum()+"笔,退款"+data.get(position).getReturnMoney()+"笔,合计");
+
+            String stat_day = data.get(position).getStat_day();
+            String month = stat_day.substring(4, 6);
+            String day = stat_day.substring(6, 8);
+            Log.e("month",month);
+            Log.e("day",day);
+            holder.text_money.setText(month+"月"+day+"日"+"收款"+data.get(position).getSum()+"笔,退款"+data.get(position).getReturnMoney()+"笔,合计");
             holder.text_time.setText(data.get(position).getStat_day());
             holder.text_content.setText(data.get(position).getPrice());
             holder.recycler_wwj.setOnClickListener(new View.OnClickListener() {

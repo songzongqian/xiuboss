@@ -387,7 +387,6 @@ public class MyFragment extends Fragment implements View.OnClickListener, Common
                   backgroundAlpha(1.0f);
               }
           });
-
           window.showAtLocation(LayoutInflater.from(getActivity()).inflate(R.layout.fragment_my, null), Gravity.CENTER, 0, 0);
       }
 

@@ -19,6 +19,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
+
 /**
  * Created by wangwenjie001 on 2018/10/12.
  */
@@ -45,7 +47,14 @@ public class ToDayAdapter extends RecyclerView.Adapter<ToDayAdapter.ViewHoder> {
 
     @Override
     public void onBindViewHolder(ViewHoder holder, int position) {
-        Glide.with(mContext).load(toDayList.get(position).getAvatar()).into(holder.image_item_one);
+        if (toDayList.get(position).getNickname().equals("微信用户")){
+            Glide.with(mContext).load(R.mipmap.common_wx_logo).bitmapTransform(new CropCircleTransformation(mContext)).into(holder.image_item_one);
+        }else if (toDayList.get(position).getNickname().equals("支付宝用户")){
+            Glide.with(mContext).load(R.mipmap.common_ali_logo).bitmapTransform(new CropCircleTransformation(mContext)).into(holder.image_item_one);
+        }else{
+            Glide.with(mContext).load(toDayList.get(position).getAvatar()).bitmapTransform(new CropCircleTransformation(mContext)).into(holder.image_item_one);
+        }
+
         holder.text_name.setText(toDayList.get(position).getNickname());
         String addtime = toDayList.get(position).getAddtime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
@@ -57,7 +66,7 @@ public class ToDayAdapter extends RecyclerView.Adapter<ToDayAdapter.ViewHoder> {
         if (toDayList.get(position).getMoney_total().equals("0")){
             holder.text_money_item_wwj.setVisibility(View.GONE);
         }else{
-            holder.text_money_item_wwj.setText(toDayList.get(position).getMoney_total());
+            holder.text_money_item_wwj.setText("已返现"+toDayList.get(position).getMoney_total());
         }
     }
 

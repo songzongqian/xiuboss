@@ -4,14 +4,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.byx.xiuboss.xiuboss.Bean.ToDayBean;
-import com.byx.xiuboss.xiuboss.Bean.TurnoverTwoData;
 import com.byx.xiuboss.xiuboss.Mvp.adapter.ToDayAdapter;
 import com.byx.xiuboss.xiuboss.Mvp.net.OkHttpUtils;
 import com.byx.xiuboss.xiuboss.R;
@@ -43,6 +42,8 @@ public class TodayMoneyActivity extends BaseActivity {
     RecyclerView todayRecycler;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
+    @BindView(R.id.empty)
+    LinearLayout empty;
     private String todayUrl = "https://www.ourdaidai.com/CI/index.php/Store/todayMoney";
     private int start = 0;
     private SharedPreferences sp;
@@ -109,18 +110,26 @@ public class TodayMoneyActivity extends BaseActivity {
     }
 
     private void getData(String data) {
-        Gson gson = new Gson();
-        final ToDayBean toDayBean = gson.fromJson(data, ToDayBean.class);
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                toDayList = toDayBean.getData();
-                adapter = new ToDayAdapter(toDayList,TodayMoneyActivity.this);
-                todayRecycler.setLayoutManager(new LinearLayoutManager(TodayMoneyActivity.this));
-                todayRecycler.setAdapter(adapter);
-            }
-        });
+        if (data==null){
 
+            refreshLayout.setVisibility(View.GONE);
+            empty.setVisibility(View.VISIBLE);
+        }else {
+
+            refreshLayout.setVisibility(View.VISIBLE);
+            empty.setVisibility(View.GONE);
+            Gson gson = new Gson();
+            final ToDayBean toDayBean = gson.fromJson(data, ToDayBean.class);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    toDayList = toDayBean.getData();
+                    adapter = new ToDayAdapter(toDayList, TodayMoneyActivity.this);
+                    todayRecycler.setLayoutManager(new LinearLayoutManager(TodayMoneyActivity.this));
+                    todayRecycler.setAdapter(adapter);
+                }
+            });
+        }
 
     }
 
@@ -128,6 +137,7 @@ public class TodayMoneyActivity extends BaseActivity {
     public void onViewClicked() {
         finish();
     }
+
     public void obtainDataTwo() {
         //第二个列表加载更多请求
         Map<String, String> map = new HashMap<>();

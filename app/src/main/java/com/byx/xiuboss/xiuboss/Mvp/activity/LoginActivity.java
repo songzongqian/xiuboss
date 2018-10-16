@@ -1,12 +1,22 @@
 package com.byx.xiuboss.xiuboss.Mvp.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -14,6 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -63,6 +74,8 @@ public class LoginActivity extends BaseActivity implements View.OnFocusChangeLis
     private boolean isTestVisibility = true;
     private ImageView imgfinsh;
     private RelativeLayout translate;
+    private TextView titleText;
+    private TextView forgetPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,7 +212,14 @@ public class LoginActivity extends BaseActivity implements View.OnFocusChangeLis
         mLogin_register = (TextView) findViewById(R.id.login_register);
         mLl_name_psw = (LinearLayout) findViewById(R.id.ll_name_psw);
         translate = (RelativeLayout) findViewById(R.id.translate);
-        TextView titleText = findViewById(R.id.title_text);
+        titleText = findViewById(R.id.title_text);
+        forgetPassword = findViewById(R.id.forgetPassword);
+        forgetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCallPopupWindow("0330-3576321");
+            }
+        });
         mUserLine = findViewById(R.id.user_line);
         titleText.setText("登陆");
 
@@ -283,6 +303,67 @@ public class LoginActivity extends BaseActivity implements View.OnFocusChangeLis
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    private void showCallPopupWindow(final String call){
+        View contentView = LayoutInflater.from(LoginActivity.this).inflate(R.layout.popup_call, null, false);
+       final PopupWindow window = new PopupWindow(contentView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        TextView callName = contentView.findViewById(R.id.call_name);
+        final TextView callNumber = contentView.findViewById(R.id.call_number);
+        TextView callDial = contentView.findViewById(R.id.call_dial);
+        TextView callCancel = contentView.findViewById(R.id.call_cancel);
+        callName.setVisibility(View.GONE);
+        callNumber.setText(call);
+        callDial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               /* //使用兼容库就无需判断系统版本
+                if (Build.VERSION.SDK_INT >= 22) {
+                    if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(LoginActivity.this, new String[]{Manifest.permission.CALL_PHONE}, 2000);
+                    }else {
+
+                        call(callNumber.getText().toString());
+
+                    }
+                } else {
+                    call(callNumber.getText().toString());
+
+                }*/
+               call(call);
+            }
+        });
+        callCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                window.dismiss();
+
+            }
+        });
+        window.setOutsideTouchable(true);
+        window.setTouchable(true);
+        backgroundAlpha(0.5f);
+        window.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                backgroundAlpha(1.0f);
+            }
+        });
+        window.showAtLocation(LayoutInflater.from(LoginActivity.this).inflate(R.layout.activity_login, null), Gravity.CENTER, 0, 0);
+    }
+    /**
+     * 调用拨号界面	 * @param phone 电话号码
+     */
+    private void call(String phone) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Uri data = Uri.parse("tel:" + phone);
+        intent.setData(data);
+        startActivity(intent);
+    }
+    private void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = bgAlpha;
+       getWindow().setAttributes(lp);
+       getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
     }
 
 }
