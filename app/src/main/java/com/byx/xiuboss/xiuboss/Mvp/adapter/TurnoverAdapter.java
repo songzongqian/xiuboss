@@ -1,0 +1,237 @@
+package com.byx.xiuboss.xiuboss.Mvp.adapter;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+
+import com.byx.xiuboss.xiuboss.Bean.TurnoverData;
+import com.byx.xiuboss.xiuboss.MainActivity;
+import com.byx.xiuboss.xiuboss.Mvp.net.OkHttpUtils;
+import com.byx.xiuboss.xiuboss.R;
+import com.google.gson.Gson;
+import com.zhy.autolayout.utils.AutoUtils;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import okhttp3.Call;
+import okhttp3.Response;
+
+/**
+ * Created by wwj on 2018/9/1.
+ */
+
+public class TurnoverAdapter extends RecyclerView.Adapter<TurnoverAdapter.ViewHolder>  {
+    private TurnoverData data;
+    private Context context;
+    private SharedPreferences share;
+    private String sid;
+    private int pageIndex=0;
+    private List<TurnoverData.DataBean> listData;
+    private MainActivity activity=new MainActivity();
+    private View VIEW_FOOTER;
+    //Type
+    private int TYPE_NORMAL = 1000;
+    private int TYPE_FOOTER = 1002;
+
+    public TurnoverAdapter(Context context, List<TurnoverData.DataBean> listData,TurnoverData data) {
+        this.data=data;
+        this.context = context;
+        this.listData = listData;
+    }
+
+    public TurnoverAdapter(Context context, List<TurnoverData.DataBean> listData) {
+        this.context = context;
+        this.listData = listData;
+    }
+
+    public void setData(List<TurnoverData.DataBean> listData) {
+        this.listData = listData;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (isFooterView(position)) {
+            return TYPE_FOOTER;
+        } else {
+            return TYPE_NORMAL;
+        }
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == TYPE_FOOTER) {
+            return new ViewHolder(VIEW_FOOTER);
+        } else {
+            return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.turn_over_adapter_item, null));
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        if (getItemViewType(position) == TYPE_FOOTER) return;
+        if (holder instanceof ViewHolder) {
+
+            if (listData.get(position).getPrice().indexOf(".")!=-1){
+                holder.text_money.setText("+" + listData.get(position).getPrice());
+            }else{
+                holder.text_money.setText("+" + listData.get(position).getPrice()+".00");
+            }
+
+            if(listData.get(position).getMoney_total().equals("0")){
+                holder.text_money_item_wwj.setVisibility(View.GONE);
+            }else{
+                holder.text_money_item_wwj.setText("已返现"+listData.get(position).getMoney_total());
+            }
+            String addtime = listData.get(position).getAddtime();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+            Long aLong = Long.valueOf(addtime);
+            long lt = new Long(aLong*1000);
+            Date date = new Date(lt);
+            holder.text_time.setText(simpleDateFormat.format(date));
+            holder.text_name.setText(listData.get(position).getNickname());
+            Glide.with(context).load(listData.get(position).getAvatar()).bitmapTransform(new CropCircleTransformation(context)).into(holder.image_item_one);
+            if (position + 1 == listData.size()) {
+                holder.text_jia.setVisibility(View.VISIBLE);
+            }else{
+                holder.text_jia.setVisibility(View.GONE);
+            }
+            if (data.getMessage().equals("没有营业额")){
+                holder.relativi_one.setVisibility(View.GONE);
+                holder.relativi_two.setVisibility(View.VISIBLE);
+            }else{
+                holder.relativi_one.setVisibility(View.VISIBLE);
+                holder.relativi_two.setVisibility(View.GONE);
+            }
+
+
+            holder.text_jia.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //请求加载更多的数据
+
+                    share = context.getSharedPreferences("login_sucess",context.MODE_PRIVATE);
+                    sid = share.getString("sid", "");
+                    Map<String, String> params = new HashMap<>();
+                    params.put("sid", sid);
+                    params.put("start", (pageIndex += 5) + "");
+
+                    OkHttpUtils.getInstance().postDataAsynToNet("https://www.ourdaidai.com/CI/index.php/Store/todayMoney", params, new OkHttpUtils.MyNetCall() {
+                        @Override
+                        public void success(Call call, final Response response) throws IOException {
+                            final String message = response.body().string();
+                            activity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    Log.e("第一个接口的加载更多请求数据", message);
+                                    Gson gson = new Gson();
+                                    TurnoverData data = gson.fromJson(message, TurnoverData.class);
+                                    List<TurnoverData.DataBean> data1 = data.getData();
+
+                                    if (null == data1){
+                                        Toast.makeText(context, "没有更多数据了", Toast.LENGTH_SHORT).show();
+                                    }else {
+
+                                        listData.addAll(data1);
+                                        notifyDataSetChanged();
+                                    }
+
+                                    if (position + 1 == listData.size()) {
+                                        holder.text_jia.setVisibility(View.VISIBLE);
+                                    }else{
+                                        holder.text_jia.setVisibility(View.GONE);
+                                    }
+                                }
+
+                            });
+                        }
+
+                        @Override
+                        public void failed(Call call, IOException e) {
+
+                        }
+                    });
+
+                }
+            });
+
+        }
+    }
+
+    public void addFooterView(View footerView) {
+        if (haveFooterView()) {
+            throw new IllegalStateException("footerView has already exists!");
+        } else {
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            footerView.setLayoutParams(params);
+            VIEW_FOOTER = footerView;
+            notifyItemInserted(getItemCount() - 1);
+        }
+    }
+
+    public static String getDateToString(long milSecond, String pattern) {
+        Date date = new Date(milSecond);
+        SimpleDateFormat format = new SimpleDateFormat(pattern);
+        return format.format(date);
+    }
+
+    public void addData(int position) {
+
+    }
+
+    private boolean isFooterView(int position) {
+        return haveFooterView() && position == getItemCount() - 1;
+    }
+
+    public boolean haveFooterView() {
+        return VIEW_FOOTER != null;
+    }
+
+    @Override
+    public int getItemCount() {
+        int count = (listData == null ? 0 : listData.size());
+        if (VIEW_FOOTER != null) {
+            count++;
+        }
+        return count;
+    }
+
+
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+
+        private ImageView image_item_one;
+        private TextView text_name, text_time, text_money, text_jia,text_money_item_wwj;
+        private RelativeLayout relativi_one,relativi_two;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            AutoUtils.autoSize(itemView);
+            image_item_one = itemView.findViewById(R.id.image_head_item_one);
+            text_name = itemView.findViewById(R.id.text_name_item_one);
+            text_time = itemView.findViewById(R.id.text_time_item_one);
+            text_money = itemView.findViewById(R.id.text_money_item_one);
+            text_money_item_wwj = itemView.findViewById(R.id.text_money_item_wwj);
+            text_jia = itemView.findViewById(R.id.text_jia_item_one);
+            relativi_one = itemView.findViewById(R.id.relativi_one);
+            relativi_two = itemView.findViewById(R.id.relativi_two);
+        }
+    }
+}
