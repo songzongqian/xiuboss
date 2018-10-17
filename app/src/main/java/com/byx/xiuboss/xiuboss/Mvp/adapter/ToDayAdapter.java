@@ -63,10 +63,11 @@ public class ToDayAdapter extends RecyclerView.Adapter<ToDayAdapter.ViewHoder> {
         Date date = new Date(lt);
         holder.text_time.setText(simpleDateFormat.format(date));
         holder.text_money.setText("+"+toDayList.get(position).getPrice());
-        if (toDayList.get(position).getMoney_total().equals("0")){
+        String money_total = toDayList.get(position).getMoney_total();
+        if (money_total.equals("0")){
             holder.text_money_item_wwj.setVisibility(View.GONE);
         }else{
-            holder.text_money_item_wwj.setText("已返现"+toDayList.get(position).getMoney_total());
+            holder.text_money_item_wwj.setText("已返现"+money_total);
         }
     }
 

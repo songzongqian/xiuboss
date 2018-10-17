@@ -116,12 +116,10 @@ public class TurnoverAdapter extends RecyclerView.Adapter<TurnoverAdapter.ViewHo
                 Glide.with(context).load(listData.get(position).getAvatar()).bitmapTransform(new CropCircleTransformation(context)).into(holder.image_item_one);
             }
 
-            if (position ==4) {
+            if (position+1 ==listData.size()-5) {
                 holder.text_jia.setVisibility(View.VISIBLE);
-
             }else{
                 holder.text_jia.setVisibility(View.GONE);
-
             }
             if (data.getMessage().equals("没有营业额")){
                 holder.relativi_one.setVisibility(View.GONE);
@@ -219,7 +217,7 @@ public class TurnoverAdapter extends RecyclerView.Adapter<TurnoverAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        int count = (listData == null ? 0 : listData.size());
+        int count = (listData == null ? 0 : listData.size()-5);
         if (VIEW_FOOTER != null) {
             count++;
         }

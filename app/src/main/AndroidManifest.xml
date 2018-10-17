@@ -74,7 +74,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".Mvp.activity.TipsActivity" />
-        <activity android:name=".Mvp.activity.TodayMoneyActivity"></activity>
+        <activity android:name=".Mvp.activity.TodayMoneyActivity" />
+        <activity android:name=".Mvp.activity.ReceivablesActivity" />
+        <activity android:name=".Mvp.activity.AccountActivity" />
+        <activity android:name=".Mvp.activity.CompletedActivity"></activity>
     </application>
 
 </manifest>

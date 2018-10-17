@@ -1,5 +1,6 @@
 package com.byx.xiuboss.xiuboss.Bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -68,7 +69,7 @@ public class MyBalanceBean {
             this.data = data;
         }
 
-        public static class DataBean {
+        public static class DataBean implements Serializable{
             /**
              * channel : 银行卡
              * get_fee : 0.03

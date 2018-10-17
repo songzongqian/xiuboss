@@ -176,7 +176,7 @@ public class BillFragment extends Fragment {
         Map<String, String> map = new HashMap<>();
         map.put("sid", sid);
         map.put("start", pageIndex + 5 + "");
-        OkHttpUtils.getInstance().postDataAsynToNet(url_there, map, new OkHttpUtils.MyNetCall() {
+        OkHttpUtils.getInstance().postDataAsynToNet(url_two, map, new OkHttpUtils.MyNetCall() {
             @Override
             public void success(Call call, Response response) throws IOException {
                 final String string = response.body().string();

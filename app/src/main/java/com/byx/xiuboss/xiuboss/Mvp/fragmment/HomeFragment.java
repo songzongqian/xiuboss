@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -28,8 +29,8 @@ import android.widget.Toast;
 import com.byx.xiuboss.xiuboss.Bean.HomeBean;
 import com.byx.xiuboss.xiuboss.Bean.HomePopup;
 import com.byx.xiuboss.xiuboss.Jgim.utils.ToastUtil;
-import com.byx.xiuboss.xiuboss.MainActivity;
 import com.byx.xiuboss.xiuboss.Mvp.activity.BalanceActivity;
+import com.byx.xiuboss.xiuboss.Mvp.activity.ReceivablesActivity;
 import com.byx.xiuboss.xiuboss.Mvp.activity.TipsActivity;
 import com.byx.xiuboss.xiuboss.Mvp.activity.TodayMoneyActivity;
 import com.byx.xiuboss.xiuboss.Mvp.activity.WeChatActivity;
@@ -49,8 +50,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -125,6 +124,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     Button buttonRewardTwo;
     @BindView(R.id.relative_Totalamount)
     RelativeLayout relativeTotalamount;
+    @BindView(R.id.receivables)
+    LinearLayout receivables;
+    @BindView(R.id.business)
+    LinearLayout business;
+    @BindView(R.id.commodity)
+    LinearLayout commodity;
+    @BindView(R.id.wallet)
+    LinearLayout wallet;
+    @BindView(R.id.receipt_code)
+    LinearLayout receiptCode;
+    @BindView(R.id.linearLayout)
+    LinearLayout linearLayout;
+    @BindView(R.id.textView8)
+    TextView textView8;
     private String homeUrl = "https://www.ourdaidai.com/CI/index.php/StoreMy/storeHome";
     private String popUrl = "https://www.ourdaidai.com/CI/index.php/StoreMy/reward";
     private String title;
@@ -198,9 +211,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 midMoney.setText(homeBean.getData().getCurrentGrade().getF2());
                 maxMoney.setText(homeBean.getData().getNextGrade().getF2());
                 String id = homeBean.getData().getCurrentGrade().getId();
-                if (id==null){
-                    dengji.setText("Lv"+"0");
-                }else{
+                if (id == null) {
+                    dengji.setText("Lv" + "0");
+                } else {
                     dengji.setText("Lv" + homeBean.getData().getCurrentGrade().getId());
                 }
                 gradeMoney.setText(homeBean.getData().getCurrentGrade().getF4());
@@ -221,9 +234,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.home_scan_image, R.id.home_wechat_image, R.id.home_icon_tips, R.id.button_reward, R.id.relative_Totalamount})
+    @OnClick({R.id.home_scan_image, R.id.home_wechat_image, R.id.home_icon_tips, R.id.button_reward, R.id.relative_Totalamount,R.id.receivables, R.id.business, R.id.commodity, R.id.wallet, R.id.receipt_code})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            //扫一扫
             case R.id.home_scan_image:
                 AndPermission.with(this)
                         .permission(Permission.CAMERA, Permission.READ_EXTERNAL_STORAGE)
@@ -257,15 +271,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             }
                         }).start();
                 break;
+                //二维码
             case R.id.home_wechat_image:
                 intent = new Intent(getActivity(), WeChatActivity.class);
                 intent.putExtra("sid", sid);
                 startActivity(intent);
                 break;
+                //等级规则
             case R.id.home_icon_tips:
                 intent = new Intent(getActivity(), TipsActivity.class);
                 startActivity(intent);
                 break;
+                //领取奖励
             case R.id.button_reward:
                 showPopupWindow();
                 backgroundAlpha(0.5f);
@@ -276,9 +293,29 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     }
                 });
                 break;
+                //今日收款详情
             case R.id.relative_Totalamount:
                 intent = new Intent(getActivity(), TodayMoneyActivity.class);
                 startActivity(intent);
+                break;
+                //收款
+            case R.id.receivables:
+                intent=new Intent(getActivity(),ReceivablesActivity.class);
+                startActivity(intent);
+                break;
+                //商家
+            case R.id.business:
+                break;
+                //商品
+            case R.id.commodity:
+                break;
+                //钱包
+            case R.id.wallet:
+                intent=new Intent(getActivity(),BalanceActivity.class);
+                startActivity(intent);
+                break;
+                //收款码
+            case R.id.receipt_code:
                 break;
         }
     }
@@ -476,9 +513,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
 
-
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -536,4 +570,5 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             countDownTimer = null;
         }
     }
+
 }

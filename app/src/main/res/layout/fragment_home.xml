@@ -22,8 +22,7 @@
             android:layout_marginLeft="11px"
             android:layout_marginStart="11px"
             android:layout_marginTop="8px"
-            android:src="@mipmap/index_icon_scan"
-             />
+            android:src="@mipmap/index_icon_scan" />
 
         <TextView
             android:id="@+id/home_title"
@@ -88,6 +87,147 @@
             android:text="带来的顾客"
             android:textColor="#999999"
             android:textSize="10px" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@+id/textView21"
+            android:layout_marginTop="15px"
+            android:background="#F6F6F6"
+             />
+
+<LinearLayout
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="55px"
+    android:orientation="horizontal"
+    android:layout_below="@id/textView18"
+    >
+    <LinearLayout
+        android:id="@+id/receivables"
+    android:layout_width="0dp"
+    android:layout_weight="1"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginLeft="44px"
+     android:gravity="center"
+    >
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/index_icon_receivables"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="收款"
+        android:textSize="14px"
+        android:textColor="#666666"
+        />
+</LinearLayout>
+    <LinearLayout
+        android:id="@+id/business"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="44px"
+        android:gravity="center"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/index_icon_money"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商家"
+            android:textSize="14px"
+            android:textColor="#666666"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/commodity"
+        android:visibility="gone"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="44px"
+        android:gravity="center"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/index_icon_money"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商品"
+            android:textSize="14px"
+            android:textColor="#666666"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/wallet"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="44px"
+        android:gravity="center"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/index_icon_money"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="钱包"
+            android:textSize="14px"
+            android:textColor="#666666"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/receipt_code"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="44px"
+        android:gravity="center"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/index_icon_receivables"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="收款码"
+            android:textSize="14px"
+            android:textColor="#666666"
+            />
+    </LinearLayout>
+
+</LinearLayout>
+
+   <!--     <TextView
+            android:id="@+id/textView43"
+            android:layout_width="2px"
+            android:layout_height="30px"
+            android:layout_below="@id/textView18"
+            android:layout_centerHorizontal="true"
+            android:background="#F6F6F6"
+            android:layout_marginTop="12px"
+            />-->
+
     </RelativeLayout>
 
     <RelativeLayout

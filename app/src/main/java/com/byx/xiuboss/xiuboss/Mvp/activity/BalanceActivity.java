@@ -114,6 +114,7 @@ public class BalanceActivity extends BaseActivity implements View.OnClickListene
             public void run() {
                 balance.setText(myBalanceBean.getData().getAmount());
                 adapter = new BalanceAdapter(lance,BalanceActivity.this);
+
                 recycler.setAdapter(adapter);
             }
         });
