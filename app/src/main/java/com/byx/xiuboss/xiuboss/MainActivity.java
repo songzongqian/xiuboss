@@ -83,7 +83,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mFragmentList.add(homeFragment);
         mFragmentList.add(billFragment);
         mFragmentList.add(myFragment);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManger(), mFragmentList);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), mFragmentList);
         viewpager.setAdapter(adapter);
         viewpager.setCurrentItem(0);
         homeBackGround();
@@ -133,16 +133,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
-    public FragmentManager getSupportFragmentManger() {
-        return getSupportFragmentManager();
-    }
-
     private void initView() {
-      /*  mMainView.initModule();
-        mMainController = new MainController(mMainView, this);
-        mMainView.setOnClickListener(mMainController);
-        mMainView.setOnPageChangeListener(mMainController);
-        fullScreen(this);*/
         actionbarHomeBtn = (RelativeLayout) findViewById(R.id.actionbar_home_btn);
         actionbarBillBtn = (RelativeLayout) findViewById(R.id.actionbar_bill_btn);
         actionbarMyBtn = (RelativeLayout) findViewById(R.id.actionbar_my_btn);

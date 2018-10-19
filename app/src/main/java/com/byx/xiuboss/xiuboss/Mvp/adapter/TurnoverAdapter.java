@@ -133,50 +133,6 @@ public class TurnoverAdapter extends RecyclerView.Adapter<TurnoverAdapter.ViewHo
             holder.text_jia.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-               /*     //请求加载更多的数据
-
-                    share = context.getSharedPreferences("login_sucess",context.MODE_PRIVATE);
-                    sid = share.getString("sid", "");
-                    Map<String, String> params = new HashMap<>();
-                    params.put("sid", sid);
-                    params.put("start", (pageIndex += 5) + "");
-
-                    OkHttpUtils.getInstance().postDataAsynToNet("https://www.ourdaidai.com/CI/index.php/Store/todayMoney", params, new OkHttpUtils.MyNetCall() {
-                        @Override
-                        public void success(Call call, final Response response) throws IOException {
-                            final String message = response.body().string();
-                            activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                    Log.e("第一个接口的加载更多请求数据", message);
-                                    Gson gson = new Gson();
-                                    TurnoverData data = gson.fromJson(message, TurnoverData.class);
-                                    List<TurnoverData.DataBean> data1 = data.getData();
-
-                                    if (null == data1){
-                                        Toast.makeText(context, "没有更多数据了", Toast.LENGTH_SHORT).show();
-                                    }else {
-
-                                        listData.addAll(data1);
-                                        notifyDataSetChanged();
-                                    }
-
-                                    if (position >=5) {
-                                        holder.text_jia.setVisibility(View.VISIBLE);
-                                    }else{
-                                        holder.text_jia.setVisibility(View.GONE);
-                                    }
-                                }
-
-                            });
-                        }
-
-                        @Override
-                        public void failed(Call call, IOException e) {
-
-                        }
-                    });*/
                     Intent intent=new Intent(context, TodayMoneyActivity.class);
                     context.startActivity(intent);
 

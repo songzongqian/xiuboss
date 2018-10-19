@@ -102,26 +102,9 @@ public class MyFragment extends Fragment implements View.OnClickListener, Common
         //EventBus.getDefault().register(this);
         sharedPreferences = getActivity().getSharedPreferences("login_sucess", getActivity().MODE_PRIVATE);
         initView(view);
-       /* isOpen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if (isChecked){
-                    if (receiver!=null){
-                        receiver.clearAbortBroadcast();
-                    }
-                }else{
-                    Log.e("------isChecked",1+"");
-                    registerBroadcast();
-
-                }
-            }
-        });*/
         initData();
         return view;
-
     }
-
     //处理事件逻辑
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void receiveEventBus(String object) {
@@ -129,7 +112,6 @@ public class MyFragment extends Fragment implements View.OnClickListener, Common
             initData();
         }
     }
-
     private void initData() {
 
         sid = sharedPreferences.getString("sid", "");
@@ -404,16 +386,6 @@ public class MyFragment extends Fragment implements View.OnClickListener, Common
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
-
-
-    private void registerBroadcast() {
-        // 注册广播接收者
-        receiver = new MyReceiver();
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("exit_app");
-        getActivity().registerReceiver(receiver, filter);
-    }
-
 
     @Override
     public void onResume() {

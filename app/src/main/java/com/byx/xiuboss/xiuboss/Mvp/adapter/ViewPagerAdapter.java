@@ -14,11 +14,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> mFragmList;
 
-    public ViewPagerAdapter(FragmentManager fm) {
-        super(fm);
-        // TODO Auto-generated constructor stub
-    }
-
     public ViewPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
         super(fm);
         this.mFragmList = fragments;
@@ -35,4 +30,5 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         // TODO Auto-generated method stub
         return mFragmList.size();
     }
+
 }

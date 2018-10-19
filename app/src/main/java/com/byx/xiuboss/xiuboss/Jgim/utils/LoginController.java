@@ -178,10 +178,7 @@ public class LoginController implements View.OnClickListener {
 
                                         LoginBean loginBean = gson.fromJson(string, LoginBean.class);
                                         List<LoginBean.DataBean.SidBean> sid = loginBean.getData().getSid();
-                                        // String sid1 =   sid.toString();
-                                        //       Log.e("sid_array----------",sid1);
                                         String sid1 = sid.get(0).getSid();
-
                                         tags.add(sid1);
                                         //   String sid1 = sid.get(0).getSid();
                                         String avatar = loginBean.getData().getAvatar();

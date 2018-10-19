@@ -252,10 +252,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     buttonThree.setVisibility(View.GONE);
                 }
 
-
-
-
-                if(rewardValue==true && xyz<200 ){
+                if(rewardValue==true && xyz>200 ){
                     buttonReward.setVisibility(View.GONE);
                     long time = System.currentTimeMillis();
                     buttonRewardTwo.setVisibility(View.VISIBLE);
@@ -521,30 +518,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 if (homePopup.getCode()==2000) {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
                     long lt = new Long(homeBean.getData().getSigntime());
-                   /* countDownTimer = new CountDownTimer(lt, 1000) {
-                        @Override
-                        public void onTick(long millisUntilFinished) {
-                            if (getActivity().isFinishing()){
-                                int ss = 1000;
-                                int mi = ss * 60;
-                                int hi =mi*60;
-                                long l = millisUntilFinished / hi;
-                                long minute = (millisUntilFinished-l*hi)/ mi;//计算分钟
-                                long second = (millisUntilFinished- minute * mi) / ss;//总时间-分钟的毫秒数得到秒数
-                                //小时
-                                strHinute = l < 10 ? "0" + l : "" + l;
-                                //分钟
-                                strMinute = minute < 10 ? "0" + minute : "" + minute;
-                                //秒
-                                strSecond = second < 10 ? "0" + second : "" + second;
-                            }
-                        }
 
-                        @Override
-                        public void onFinish() {
-
-                        }
-                    }.start();*/
                     String format = simpleDateFormat.format(new Date(lt));
                     Log.e("转换之后时间戳", format);
                     SharedPreferences serverPerference = getActivity().getSharedPreferences("serverValue",MODE_PRIVATE);
@@ -565,9 +539,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     buttonThree.setVisibility(View.VISIBLE);
                     buttonThree.setText("领取时间未到");
                     System.out.println("服务器返回领取时间未到");
-                   // buttonReward.setVisibility(View.GONE);
-                  //  buttonRewardTwo.setVisibility(View.VISIBLE);
-                  //  buttonRewardTwo.setText("领取时间未到");
                 }
             }
         });

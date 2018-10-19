@@ -56,7 +56,7 @@ public class BalanceActivity extends BaseActivity implements View.OnClickListene
     }
     private void initData() {
         lance=new ArrayList<>();
-        map.put("sid","111");
+        map.put("sid",sid);
         map.put("page",page+"");
         OkHttpUtils.getInstance().postDataAsynToNet(url, map, new OkHttpUtils.MyNetCall() {
             @Override

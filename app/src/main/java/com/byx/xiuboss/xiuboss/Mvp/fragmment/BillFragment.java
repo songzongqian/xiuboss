@@ -46,6 +46,7 @@ public class BillFragment extends Fragment {
 
     private ImageView titleBackImage;
     private TextView titleText;
+    private TextView billText;
     private SmartRefreshLayout refreshLayout;
     private RecyclerView recyclerView;
     private RecyclerView recycler_two;
@@ -61,18 +62,28 @@ public class BillFragment extends Fragment {
     private String sid;
     private int pageIndex = 0;
     private TurnoverData data1;
-
+    protected boolean isCreated = false;
+    private View inflate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View inflate = inflater.inflate(R.layout.fragment_bill, container, false);
+        inflate = inflater.inflate(R.layout.fragment_bill, container, false);
         initView(inflate);
-        initData();
+
         return inflate;
 
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 标记
+        isCreated = true;
+        initView(inflate);
+        initData();
+    }
+
 
     private void initData() {
         share = getContext().getSharedPreferences("login_sucess", getContext().MODE_PRIVATE);
@@ -86,7 +97,6 @@ public class BillFragment extends Fragment {
         recycler_two.setAdapter(mAdapter_item_two);
 
         obtainDataOne();
-
         obtainDataThree();
 
 
@@ -112,11 +122,13 @@ public class BillFragment extends Fragment {
     private void initView(View inflate) {
         titleBackImage = (ImageView) inflate.findViewById(R.id.title_back_image);
         titleText = (TextView) inflate.findViewById(R.id.title_text);
+        billText = (TextView) inflate.findViewById(R.id.bill_text);
         refreshLayout = (SmartRefreshLayout) inflate.findViewById(R.id.refreshLayout);
         recyclerView = (RecyclerView) inflate.findViewById(R.id.recycler_wang);
         footView = LayoutInflater.from(getActivity()).inflate(R.layout.adapter_foot_item, null);
         recycler_two = footView.findViewById(R.id.recycler_two);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        LinearLayoutManager manager=new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(manager);
         recycler_two.setLayoutManager(new LinearLayoutManager(getActivity()));
         titleBackImage.setVisibility(View.GONE);
         titleText.setText("账单");
@@ -155,11 +167,17 @@ public class BillFragment extends Fragment {
                         Log.e("第一个接口的请求数据", message);
                         Gson gson = new Gson();
                         data1 = gson.fromJson(message, TurnoverData.class);
+                        if (data1.getMessage().equals("没有营业额")){
+                            billText.setVisibility(View.VISIBLE);
+                        }else{
+                            billText.setVisibility(View.GONE);
+                        }
                         listData = data1.getData();
-                        //mAdapter_item.setData(listData);
+                       // mAdapter_item.setData(listData);
                         mAdapter_item = new TurnoverAdapter(getActivity(), listData,data1);
                         mAdapter_item.addFooterView(footView);
                         recyclerView.setAdapter(mAdapter_item);
+
                     }
                 });
             }
@@ -233,4 +251,15 @@ public class BillFragment extends Fragment {
             }
         });
     }
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (!isCreated) {
+            return;
+        }
+        }
+
 }
