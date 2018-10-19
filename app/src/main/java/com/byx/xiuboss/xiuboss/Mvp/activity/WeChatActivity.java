@@ -3,6 +3,7 @@ package com.byx.xiuboss.xiuboss.Mvp.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
@@ -61,7 +62,6 @@ public class WeChatActivity extends BaseActivity implements PermissionInterface 
     private String extra;
     private PopupWindow window;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,14 +100,6 @@ public class WeChatActivity extends BaseActivity implements PermissionInterface 
             case R.id.title_back_image:
                 finish();
                 break;
-          /*  case R.id.button:
-                //初始化并发起权限申请
-                mPermissionHelper = new PermissionHelper(WeChatActivity.this, this);
-                mPermissionHelper.requestPermissions();
-                Bitmap bitmap = loadBitmapFromView(weChatBean.getData());
-                ImgUtils.saveImageToGallery(WeChatActivity.this, bitmap);
-                ToastUtil.shortToast(WeChatActivity.this,"已保存至相册");
-                break;*/
             case R.id.wechat_showpup:
                 showPopupWindow();
                 break;
@@ -192,6 +184,7 @@ public class WeChatActivity extends BaseActivity implements PermissionInterface 
         window = new PopupWindow(inflate, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
 
         TextView Preservation = inflate.findViewById(R.id.Preservation);
+        TextView dismis = inflate.findViewById(R.id.dismis);
 
         Preservation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,6 +202,12 @@ public class WeChatActivity extends BaseActivity implements PermissionInterface 
 
             }
         });
+        dismis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                window.dismiss();
+            }
+        });
         backgroundAlpha(0.5f);
         window.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -218,6 +217,7 @@ public class WeChatActivity extends BaseActivity implements PermissionInterface 
         });
         window.setOutsideTouchable(true);
         window.setTouchable(true);
+        window.setBackgroundDrawable(new BitmapDrawable());
         window.showAtLocation(LayoutInflater.from(WeChatActivity.this).inflate(R.layout.activity_we_chat, null), Gravity.BOTTOM, 0, 0);
     }
 

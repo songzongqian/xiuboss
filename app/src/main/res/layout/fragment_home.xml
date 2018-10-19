@@ -26,7 +26,7 @@
 
         <TextView
             android:id="@+id/home_title"
-            android:layout_width="73px"
+            android:layout_width="wrap_content"
             android:layout_height="25px"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10px"
@@ -42,17 +42,33 @@
             android:layout_marginRight="8px"
             android:layout_marginTop="8px"
             android:src="@mipmap/index_icon_wechat" />
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="52px"
+    android:layout_marginLeft="80px"
+    >
+    <TextView
+        android:id="@+id/total_fee"
+        android:layout_width="wrap_content"
+        android:layout_height="37px"
+        android:layout_alignParentLeft="true"
+        android:text="625"
+        android:layout_centerHorizontal="true"
+        android:textColor="#C6A04D"
+        android:textSize="26px" />
 
-        <TextView
-            android:id="@+id/total_fee"
-            android:layout_width="wrap_content"
-            android:layout_height="37px"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="80px"
-            android:layout_marginTop="52px"
-            android:text="625"
-            android:textColor="#C6A04D"
-            android:textSize="26px" />
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="14px"
+        android:layout_below="@+id/total_fee"
+        android:layout_marginTop="5px"
+        android:layout_centerHorizontal="true"
+        android:text="返现总收入"
+        android:textColor="#999999"
+        android:textSize="10px" />
+</RelativeLayout>
 
         <TextView
             android:id="@+id/customer"
@@ -64,17 +80,6 @@
             android:text="4"
             android:textColor="#C6A04D"
             android:textSize="26px" />
-
-        <TextView
-            android:id="@+id/textView19"
-            android:layout_width="wrap_content"
-            android:layout_height="14px"
-            android:layout_below="@+id/total_fee"
-            android:layout_marginLeft="78px"
-            android:layout_marginTop="5px"
-            android:text="返现总收入"
-            android:textColor="#999999"
-            android:textSize="10px" />
 
         <TextView
             android:id="@+id/textView21"
@@ -449,7 +454,6 @@
 
 
         <Button
-
             android:id="@+id/button_reward"
             android:layout_width="wrap_content"
             android:layout_height="32px"
@@ -459,17 +463,55 @@
             android:text="领取奖励"
             android:textColor="#FFFFFF"
             android:textSize="16px" />
+
+        <LinearLayout
+            android:id="@+id/ll_count"
+            android:layout_width="wrap_content"
+            android:layout_height="32px"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/button_popup_two"
+            android:layout_marginTop="166px"
+            android:orientation="horizontal">
+
+            <cn.iwgang.countdownview.CountdownView
+                android:id="@+id/button_reward_two"
+                android:layout_width="wrap_content"
+                android:layout_height="32px"
+                app:isShowDay="false"
+                app:isShowHour="true"
+                app:isShowMillisecond="false"
+                app:isShowMinute="true"
+                app:isShowSecond="true"
+                app:suffixGravity="center"
+                app:suffixTextColor="#666666"
+                app:suffixTextSize="11sp"
+                app:timeTextColor="#666666"
+                app:timeTextSize="11sp"
+                android:layout_gravity="center_vertical"
+                />
+
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:text="之后可领取"/>
+
+        </LinearLayout>
+
         <Button
             android:visibility="gone"
-            android:id="@+id/button_reward_two"
+            android:id="@+id/button_three"
             android:layout_width="wrap_content"
             android:layout_height="32px"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="166px"
             android:background="@drawable/button_popup_two"
-            android:text="领取时间未到"
-            android:textColor="#FFFFFF"
-            android:textSize="11px" />
+            android:text="等级不足"
+            android:textColor="#666666"
+            android:textSize="14px" />
+
+
 
         <TextView
             android:id="@+id/mid_money"

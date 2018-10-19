@@ -39,7 +39,7 @@
             android:layout_below="@+id/textView25"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="23px"
-            android:background="@drawable/erweima"
+
             />
 
         <TextView

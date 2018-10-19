@@ -192,7 +192,7 @@ public class BillFragment extends Fragment {
                         } else {
                             data.addAll(list);
                             mAdapter_item_two.setData(data);
-
+                            mAdapter_item_two.notifyDataSetChanged();
                         }
                     }
                 });

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -55,10 +56,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.iwgang.countdownview.CountdownView;
 import okhttp3.Call;
 import okhttp3.Response;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -121,7 +124,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.reward_money)
     TextView rewardMoney;
     @BindView(R.id.button_reward_two)
-    Button buttonRewardTwo;
+    CountdownView buttonRewardTwo;
     @BindView(R.id.relative_Totalamount)
     RelativeLayout relativeTotalamount;
     @BindView(R.id.receivables)
@@ -138,6 +141,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     LinearLayout linearLayout;
     @BindView(R.id.textView8)
     TextView textView8;
+    @BindView(R.id.ll_count)
+    LinearLayout ll_btn2;
+
+    @BindView(R.id.button_three)
+    Button buttonThree;
+
     private String homeUrl = "https://www.ourdaidai.com/CI/index.php/StoreMy/storeHome";
     private String popUrl = "https://www.ourdaidai.com/CI/index.php/StoreMy/reward";
     private String title;
@@ -154,6 +163,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private String strHinute;
     private String strMinute;
     private String strSecond;
+    int flag=0;
+    private boolean rewardValue;
+    private long servermills;
+    private int amountValue;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -166,15 +179,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         inflate = inflater.inflate(R.layout.fragment_home, container, false);
         popup = LayoutInflater.from(getActivity()).inflate(R.layout.popup_reward, null);
-        login_sucess = getActivity().getSharedPreferences("login_sucess", Context.MODE_PRIVATE);
+        login_sucess = getActivity().getSharedPreferences("login_sucess", MODE_PRIVATE);
+        SharedPreferences isRewad=getActivity().getSharedPreferences("flag",MODE_PRIVATE);
+        SharedPreferences serversp = getActivity().getSharedPreferences("serverValue",MODE_PRIVATE);
+        rewardValue = isRewad.getBoolean("isreward",false);
+        servermills = serversp.getLong("server",0);
         unbinder = ButterKnife.bind(this, this.inflate);
         initData();
         return this.inflate;
     }
 
     private void initData() {
-        Map<String, String> map = new HashMap<>();
 
+        Map<String, String> map = new HashMap<>();
         sid = login_sucess.getString("sid", "");
         title = login_sucess.getString("title", "");
         home_title.setText(title);
@@ -198,7 +215,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
                 Gson gson = new Gson();
                 homeBean = gson.fromJson(data, HomeBean.class);
                 home_title.setText(login_sucess.getString("homeTitle", ""));
@@ -207,10 +223,49 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Totalamount.setText("今日收款" + homeBean.getData().getTodaySum() + "笔,合计");
                 TotalamountMoney.setText(homeBean.getData().getTodayFee() + "元");
                 yesterdayMoney.setText("昨日实时：" + homeBean.getData().getYesterFee() + "元");
-                balanceMoney.setText(homeBean.getData().getAmount().getAmountFee() + "元");
+                HomeBean.DataBean.AmountBean amount = homeBean.getData().getAmount();
+                balanceMoney.setText(amount.getAmountFee() + "元");
                 midMoney.setText(homeBean.getData().getCurrentGrade().getF2());
                 maxMoney.setText(homeBean.getData().getNextGrade().getF2());
                 String id = homeBean.getData().getCurrentGrade().getId();
+                Double xyz= Double.parseDouble(amount.getAmount());
+
+                if(xyz<200){
+                    buttonThree.setVisibility(View.VISIBLE);
+                    buttonThree.setText("等级不足");
+                    buttonReward.setVisibility(View.GONE);
+                    ll_btn2.setVisibility(View.GONE);
+                }else if(rewardValue==true){
+                    buttonReward.setVisibility(View.GONE);
+                    buttonThree.setVisibility(View.GONE);
+                    long time = System.currentTimeMillis();
+                    ll_btn2.setVisibility(View.VISIBLE);
+                    long CurrentTimes= time;
+                    if(CurrentTimes< servermills){
+                        long chaValue= servermills-CurrentTimes;
+                        buttonRewardTwo.start(chaValue);
+                    }
+                }else if(rewardValue==false && xyz>=200){
+                    buttonReward.setVisibility(View.VISIBLE);
+                    buttonReward.setText("领取奖励");
+                    ll_btn2.setVisibility(View.GONE);
+                    buttonThree.setVisibility(View.GONE);
+                }
+
+
+
+
+                if(rewardValue==true && xyz<200 ){
+                    buttonReward.setVisibility(View.GONE);
+                    long time = System.currentTimeMillis();
+                    buttonRewardTwo.setVisibility(View.VISIBLE);
+                    long CurrentTimes= time;
+                    if(CurrentTimes< servermills){
+                        long chaValue= servermills-CurrentTimes;
+                        buttonRewardTwo.start(chaValue);
+                    }
+                }
+
                 if (id == null) {
                     dengji.setText("Lv" + "0");
                 } else {
@@ -380,14 +435,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 getPopopSuccess();
             }
         });
-
+        window.setBackgroundDrawable(new BitmapDrawable());
         window.setOutsideTouchable(true);
         window.setTouchable(true);
         window.showAtLocation(LayoutInflater.from(getActivity()).inflate(R.layout.fragment_home, null), Gravity.CENTER, 0, 0);
-        getPopupData();
     }
-
-    private void getPopopSuccess() {
+    private void getPopopSuccess(){
         View inflate = LayoutInflater.from(getActivity()).inflate(R.layout.popup_success, null, false);
         window = new PopupWindow(inflate, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         ImageView close = inflate.findViewById(R.id.icon_close);
@@ -403,6 +456,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                window.dismiss();
                 Intent intent = new Intent(getActivity(), BalanceActivity.class);
                 getActivity().startActivity(intent);
             }
@@ -416,7 +470,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         });
         window.setOutsideTouchable(true);
         window.setTouchable(true);
+        window.setBackgroundDrawable(new BitmapDrawable());
         window.showAtLocation(LayoutInflater.from(getActivity()).inflate(R.layout.fragment_home, null), Gravity.CENTER, 0, 0);
+        getPopupData();
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("flag",MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean("isreward",true).commit();
     }
 
     @Override
@@ -453,20 +511,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void getpopData(final String pop) {
-
-
         Gson gson = new Gson();
-
         final HomePopup homePopup = gson.fromJson(pop, HomePopup.class);
         String message = homePopup.getMessage();
         Log.e("时间戳", message);
-        getActivity().runOnUiThread(new Runnable() {
+        getActivity().runOnUiThread(new Runnable(){
             @Override
             public void run() {
-                if (homePopup.getCode() != 2000) {
+                if (homePopup.getCode()==2000) {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
                     long lt = new Long(homeBean.getData().getSigntime());
-
                    /* countDownTimer = new CountDownTimer(lt, 1000) {
                         @Override
                         public void onTick(long millisUntilFinished) {
@@ -483,8 +537,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                 strMinute = minute < 10 ? "0" + minute : "" + minute;
                                 //秒
                                 strSecond = second < 10 ? "0" + second : "" + second;
-
-
                             }
                         }
 
@@ -495,16 +547,27 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     }.start();*/
                     String format = simpleDateFormat.format(new Date(lt));
                     Log.e("转换之后时间戳", format);
-                    buttonRewardTwo.setText(format + "之后可领取");
-                    buttonRewardTwo.setTextColor(0xFF666666);
+                    SharedPreferences serverPerference = getActivity().getSharedPreferences("serverValue",MODE_PRIVATE);
+                    serverPerference.edit().putLong("server",lt*1000+86400000).commit();
+                    System.out.println("服务器返回领取时间"+lt);
+                    long currentTime = System.currentTimeMillis();
+                    System.out.println("系统当前时间"+currentTime);
+                    long finalValue=(lt*1000+86400000-1000)-currentTime;
+                    System.out.println("计算获取最终时间"+finalValue);
+                    buttonRewardTwo.start(finalValue);
                     buttonRewardTwo.setEnabled(false);
                     buttonReward.setVisibility(View.GONE);
-                    buttonRewardTwo.setVisibility(View.VISIBLE);
-                } else {
+                    ll_btn2.setVisibility(View.VISIBLE);
+                    buttonThree.setVisibility(View.GONE);
+                }else{
                     buttonReward.setVisibility(View.GONE);
-                    buttonRewardTwo.setVisibility(View.VISIBLE);
-                    buttonRewardTwo.setText("领取时间未到");
-
+                    ll_btn2.setVisibility(View.GONE);
+                    buttonThree.setVisibility(View.VISIBLE);
+                    buttonThree.setText("领取时间未到");
+                    System.out.println("服务器返回领取时间未到");
+                   // buttonReward.setVisibility(View.GONE);
+                  //  buttonRewardTwo.setVisibility(View.VISIBLE);
+                  //  buttonRewardTwo.setText("领取时间未到");
                 }
             }
         });
@@ -518,7 +581,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         // 扫描二维码/条码回传
         if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
-
             if (data != null) {
                 final String content = data.getStringExtra(Constant.CODED_CONTENT);
                 new AlertDialog.Builder(getActivity())

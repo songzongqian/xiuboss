@@ -77,6 +77,7 @@ public class TodayMoneyActivity extends BaseActivity {
             @Override
             public void onLoadmore(RefreshLayout refreshLayout) {
                 obtainDataTwo();
+                adapter.notifyDataSetChanged();
                 refreshLayout.finishLoadmore();
             }
         });

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-    <RelativeLayout
+   <!-- <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:background="#263147"
@@ -34,7 +34,8 @@
             android:text="收款详情"
             android:textColor="#f4f5f7"
             />
-    </RelativeLayout>
+    </RelativeLayout>-->
+    <include layout="@layout/title_item"/>
 <ListView
 
     android:layout_width="match_parent"

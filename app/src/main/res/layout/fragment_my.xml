@@ -93,15 +93,17 @@
                 android:textSize="12px"
                 />
 
-            <TextView
+            <View
                 android:id="@+id/textView9"
                 android:layout_width="match_parent"
-                android:layout_height="2px"
+                android:layout_height="3px"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/adMinistrators"
                 android:layout_marginTop="22px"
-                android:background="#DCDCDC" />
+                android:background="@drawable/mytext_shap"
+                android:layerType="software"
+                />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -118,10 +120,7 @@
                 android:id="@+id/Accountbalance_btn"
                 android:layout_width="match_parent"
                 android:layout_height="58.5px"
-                android:layout_alignBaseline="@+id/textView9"
-                android:layout_alignBottom="@+id/textView9"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true">
+                android:layout_below="@+id/textView9">
 
                 <TextView
                     android:id="@+id/textView10"
@@ -156,6 +155,7 @@
                     android:layout_marginRight="18px"
                     android:layout_marginTop="23px"
                     app:srcCompat="@mipmap/common" />
+
                 <TextView
                     android:id="@+id/textView14"
                     android:layout_width="match_parent"
@@ -163,8 +163,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/textView10"
-                    android:layout_marginTop="19px"
                     android:layout_marginLeft="15px"
+                    android:layout_marginTop="19px"
                     android:background="#F6F6F6" />
 
 
@@ -192,7 +192,7 @@
                 android:layout_marginTop="199px"
                 android:layout_marginEnd="28px"
                 android:layout_marginRight="28px"
-
+                android:checked="true"
                 ></Switch>
 
         </RelativeLayout>

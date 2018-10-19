@@ -3,10 +3,12 @@ package com.byx.xiuboss.xiuboss;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -28,6 +30,9 @@ import com.byx.xiuboss.xiuboss.Mvp.fragmment.BillFragment;
 import com.byx.xiuboss.xiuboss.Mvp.fragmment.HomeFragment;
 import com.byx.xiuboss.xiuboss.Mvp.fragmment.MyFragment;
 import com.byx.xiuboss.xiuboss.Utils.NotificationsUtils;
+import com.byx.xiuboss.xiuboss.Utils.PermissionInterface;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechUtility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,16 +52,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private TextView billText;
     private ImageView myImage;
     private TextView myText;
-
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+       if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            int permission = ActivityCompat.checkSelfPermission(this,
+                    "android.permission.WRITE_EXTERNAL_STORAGE");
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                // 没有写的权限，去申请写的权限，会弹出对话框
+                ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE,REQUEST_EXTERNAL_STORAGE);
+            }
+        }
         initView();
         initAdapter();
         initNotifications();
-
 
     }
 
@@ -196,4 +211,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         billText.setTextColor(0xFF999999);
         Glide.with(this).load(R.drawable.my_icon_bill).into(billImage);
     }
+
+
+
+
 }

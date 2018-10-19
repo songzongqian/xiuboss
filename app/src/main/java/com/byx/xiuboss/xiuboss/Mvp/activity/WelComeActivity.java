@@ -11,7 +11,7 @@ import com.byx.xiuboss.xiuboss.R;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.model.UserInfo;
 
-public class WelComeActivity extends AppCompatActivity {
+public class WelComeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

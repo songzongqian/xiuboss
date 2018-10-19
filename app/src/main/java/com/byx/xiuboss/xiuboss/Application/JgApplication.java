@@ -15,6 +15,7 @@ import cn.jpush.android.api.JPushInterface;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.model.Message;
 
+
 /**
  * Created by wangwenjie001 on 2018/9/13.
  */
@@ -23,7 +24,7 @@ public class JgApplication extends MultiDexApplication {
     public static String PICTURE_DIR = "sdcard/JChatDemo/pictures/";
     public static long registerOrLogin = 1;
     public static List<Message> forwardMsg = new ArrayList<>();
-    public static Context context ;
+    public static Context context;
     public static final String TARGET_ID = "targetId";
     public static final String TARGET_APP_KEY = "targetAppKey";
     public static final String CONV_TITLE = "conv_title";
@@ -32,12 +33,14 @@ public class JgApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        context=getApplicationContext();
         JMessageClient.init(this);
         JPushInterface.setDebugMode(true);
         JMessageClient.setDebugMode(true);
         JPushInterface.init(this);
-        SpeechUtility.createUtility(this, SpeechConstant.APPID +"=5b508ff4");
+        SpeechUtility.createUtility(context, SpeechConstant.APPID +"=5b508ff4");
         MultiDex.install(this); // Enable MultiDex.
-
     }
+
+
 }

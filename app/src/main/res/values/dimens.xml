@@ -5,6 +5,8 @@
     <dimen name="view_left_right_padding">28dp</dimen>
     <dimen name="title_bar_height">48.5dp</dimen>
 
+
+
     <!-- Login页面 -->
     <dimen name="login_email_txt_size">18sp</dimen>
     <dimen name="login_regist_head_icon_size">80dp</dimen>
@@ -58,5 +60,9 @@
     <dimen name="verticalspit_view_width">0.6dp</dimen>
     <dimen name="horizontalspit_view_height">0.6dp</dimen>
     <dimen name="item_emoticon_size_default">32dp</dimen>
+
+
+    <!-- 修饰自定义倒计时控件的锐角 -->
+    <dimen name="deminButton">15dip</dimen>
 
 </resources>

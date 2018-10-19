@@ -51,17 +51,17 @@ public class SwichAdapter extends RecyclerView.Adapter<SwichAdapter.ViewHolder> 
     }
 
     @Override
-    public SwichAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflate = LayoutInflater.from(context).inflate(R.layout.swich_item, parent, false);
 
         return new ViewHolder(inflate);
     }
 
     @Override
-    public void onBindViewHolder(final SwichAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         //在最开始适配的时候，将每一个CheckBox设置一个当前的Tag值，这样每个CheckBox都有了一个固定的标识
         if (data.get(position).getId().equals(id)){
-            Toast.makeText(context, "有", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(context, "有", Toast.LENGTH_SHORT).show();
             if (holder.swich_check_box.isChecked()){
 
             }else {
@@ -102,6 +102,7 @@ public class SwichAdapter extends RecyclerView.Adapter<SwichAdapter.ViewHolder> 
                 SharedPreferences share = context.getSharedPreferences("login_sucess", MODE_PRIVATE);
                 SharedPreferences.Editor edit = share.edit();
                 edit.putString("sid",data.get(position).getId());
+                edit.putString("homeTitle",data.get(position).getTitle());
                 edit.commit();
                 EventBus.getDefault().post(data.get(position).getId());
                 activity.finish();

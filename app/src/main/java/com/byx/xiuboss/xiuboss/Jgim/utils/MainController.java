@@ -10,7 +10,6 @@ import com.byx.xiuboss.xiuboss.Mvp.fragmment.BusinessFragment;
 import com.byx.xiuboss.xiuboss.Mvp.fragmment.ConversationListFragment;
 import com.byx.xiuboss.xiuboss.Mvp.fragmment.FindFragment;
 import com.byx.xiuboss.xiuboss.Mvp.fragmment.MyFragment;
-import com.byx.xiuboss.xiuboss.Mvp.fragmment.OrderFragment;
 import com.byx.xiuboss.xiuboss.Mvp.view.MainView;
 import com.byx.xiuboss.xiuboss.R;
 
@@ -27,7 +26,6 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
     private ConversationListFragment mConvListFragment;
     private MyFragment mMyFragment;
     private FindFragment mContactsFragment;
-    private OrderFragment orderFragment;
     private BusinessFragment mBusinessFragment;
 
     public MainController(MainView mMainView, MainActivity context) {
@@ -42,7 +40,7 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
         mConvListFragment = new ConversationListFragment();
         mContactsFragment = new FindFragment();
         mMyFragment = new MyFragment();
-        orderFragment= new OrderFragment();
+
         mBusinessFragment =new BusinessFragment();
         fragments.add(mContactsFragment);
       //  fragments.add(orderFragment);

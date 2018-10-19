@@ -1,21 +1,31 @@
 package com.byx.xiuboss.xiuboss.Mvp.activity;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Picture;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.byx.xiuboss.xiuboss.R;
+import com.byx.xiuboss.xiuboss.Utils.ImageToGallery;
+import com.byx.xiuboss.xiuboss.Utils.ImgUtils;
 import com.byx.xiuboss.xiuboss.Utils.JavaScriptinterface;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,7 +54,6 @@ public class BalanceWebActivity extends AppCompatActivity {
 
 
     private void initData() {
-
         SharedPreferences login_sucess = getSharedPreferences("login_sucess", MODE_PRIVATE);
         final String sid = login_sucess.getString("sid", "");
         final String id = login_sucess.getString("id", "");
@@ -69,19 +78,39 @@ public class BalanceWebActivity extends AppCompatActivity {
         balanceWeb.getSettings().setAppCachePath(appCachePath);
         balanceWeb.getSettings().setDatabaseEnabled(true);
         balanceWeb.setWebChromeClient(new WebChromeClient());
-        balanceWeb.addJavascriptInterface(new JavaScriptinterface(this),
-                "android");
+        balanceWeb.getSettings().setBlockNetworkImage(false);//解决图片不显示问题
+        balanceWeb.addJavascriptInterface(new JavaScriptinterface(this), "android");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            balanceWeb.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+
         Log.e("---webMap--",webMap.toString());
         balanceWeb.loadUrl(webUrl);
        /* {"sid"+":"+"111","mobile"+":"+"18034103322","tclerk_id"+":"+"22"}*/
-        balanceWeb.setWebViewClient(new WebViewClient() {
+
+
+       balanceWeb.setWebViewClient(new WebViewClient(){
             @Override
-            public void onPageFinished(WebView view, String url) {
+            public void onPageFinished(WebView view, String url){
                 super.onPageFinished(view, url);
+                /**
+                 * 监听用户长按屏幕事件
+                 */
+                balanceWeb.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view){
+                        BalanceWebActivity.this.getWindow().getDecorView().setDrawingCacheEnabled(true);
+                        Bitmap bmp=BalanceWebActivity.this.getWindow().getDecorView().getDrawingCache();
+                        ImageToGallery.saveImageToGallery(BalanceWebActivity.this,bmp);
+                        return true;
+                    }
+                });
+
+
                 String userAgent = "shixinzhang";
                 String js = "window.localStorage.setItem('withdrawUserInfo','" +String.valueOf(jsonObject) + "');";
                 String jsUrl = "javascript:(function({                    var localStorage = window.localStorage;                    localStorage.setItem('withdrawUserInfo','" + String.valueOf(jsonObject) + "')                })()";
-
+                System.out.println("url加载完毕");
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     view.evaluateJavascript(js, null);
@@ -90,8 +119,6 @@ public class BalanceWebActivity extends AppCompatActivity {
                     view.reload();
                 }
             }
-
-
         });
 
     }

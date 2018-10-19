@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CompletedActivity extends AppCompatActivity {
+public class CompletedActivity extends BaseActivity {
 
     @BindView(R.id.title_back_image)
     ImageView titleBackImage;

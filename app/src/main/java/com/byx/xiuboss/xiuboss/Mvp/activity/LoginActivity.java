@@ -222,7 +222,6 @@ public class LoginActivity extends BaseActivity implements View.OnFocusChangeLis
         });
         mUserLine = findViewById(R.id.user_line);
         titleText.setText("登陆");
-
         //退出登录重现上次的账号以及头像
         String userName = SharePreferenceManager.getCachedUsername();
         String userAvatar = SharePreferenceManager.getCachedAvatarPath();

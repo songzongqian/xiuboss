@@ -37,5 +37,5 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="15px"
         android:layout_centerVertical="true"
-        app:srcCompat="@mipmap/icon_add" />
+        app:srcCompat="@mipmap/icon_more" />
 </RelativeLayout>

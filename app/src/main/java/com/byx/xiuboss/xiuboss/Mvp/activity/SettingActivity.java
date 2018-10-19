@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.byx.xiuboss.xiuboss.Jgim.utils.ToastUtil;
 import com.byx.xiuboss.xiuboss.R;
 import com.byx.xiuboss.xiuboss.Utils.FileCacheUtil;
-import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.io.File;
 
@@ -23,8 +22,6 @@ import cn.jpush.im.android.api.JMessageClient;
 public class SettingActivity extends BaseActivity {
 
 
-    @BindView(R.id.img_back)
-    ImageView imgBack;
     @BindView(R.id.setting_image_clear)
     ImageView settingImageClear;
     @BindView(R.id.setting_image_updata)
@@ -33,17 +30,22 @@ public class SettingActivity extends BaseActivity {
     Button buttonExit;
     @BindView(R.id.clear)
     TextView clear;
+    @BindView(R.id.title_back_image)
+    ImageView titleBackImage;
+    @BindView(R.id.title_text)
+    TextView titleText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
+        titleText.setText("设置");
         File file = new File("/data/data/com.byx.xiuboss.xiuboss/files");
         try {
             String cacheSize = FileCacheUtil.getCacheSize(file);
             String substring = cacheSize.substring(0, cacheSize.indexOf(3));
-            clear.setText( substring+"k");
+            clear.setText(substring + "k");
 
             Log.e("-----file-----", substring);
         } catch (Exception e) {
@@ -51,10 +53,10 @@ public class SettingActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.img_back, R.id.setting_image_clear, R.id.setting_image_updata, R.id.button_exit})
+    @OnClick({R.id.title_back_image, R.id.setting_image_clear, R.id.setting_image_updata, R.id.button_exit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.img_back:
+            case R.id.title_back_image:
                 finish();
                 break;
             case R.id.setting_image_clear:
@@ -72,4 +74,5 @@ public class SettingActivity extends BaseActivity {
                 break;
         }
     }
+
 }

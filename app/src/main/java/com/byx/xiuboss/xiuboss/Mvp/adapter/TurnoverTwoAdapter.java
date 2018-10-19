@@ -55,7 +55,6 @@ public class TurnoverTwoAdapter extends RecyclerView.Adapter<TurnoverTwoAdapter.
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         if (holder instanceof ViewHolder){
-
             String stat_day = data.get(position).getStat_day();
             String month = stat_day.substring(4, 6);
             String day = stat_day.substring(6, 8);

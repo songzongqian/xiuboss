@@ -48,21 +48,8 @@ public class MyReceiver extends BroadcastReceiver {
             string = bundle.getString(JPushInterface.EXTRA_ALERT);
             extra = bundle.getString(JPushInterface.EXTRA_EXTRA);
             Logger.d(TAG,""+ string);
-            Gson gson=new Gson();
-            jpBean = gson.fromJson(extra, JpBean.class);
-            Logger.d(TAG,""+ extra);
-            if (jpBean.getType().equals("orderPush")){
-                Logger.d(TAG,"--------"+extra);
-                instance.speak("您有新的休休团购订单，请及时处理。");
-            }else {
-                intent1 = new Intent(context, MainActivity.class);
-                intent1.putExtra("MESSAGE", string);
-                intent1.putExtra("TITLE", jpBean.getTitle());
-                intent1.putExtra("TYPE", jpBean.getType());
-                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                instance.speak("休休团购收款"+ string +"元");//
-                context.startActivity(intent1);
-            }
+            instance.speak("休休有钱了，到账"+ string +"元");//
+
 
            // SharedPreferencesUtils.setParam(JGApplication.context,"name","休休团购收款"+ string +"元整");
             int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);

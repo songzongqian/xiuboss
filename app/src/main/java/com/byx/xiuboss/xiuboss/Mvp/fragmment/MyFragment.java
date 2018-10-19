@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import com.byx.xiuboss.xiuboss.Application.JgApplication;
 import com.byx.xiuboss.xiuboss.Bean.MyFragmentBean;
 import com.byx.xiuboss.xiuboss.Jgim.utils.SharePreferenceManager;
 import com.byx.xiuboss.xiuboss.Jgim.utils.ToastUtil;
+import com.byx.xiuboss.xiuboss.Jpush.Logger;
 import com.byx.xiuboss.xiuboss.Jpush.MyReceiver;
 import com.byx.xiuboss.xiuboss.MainActivity;
 import com.byx.xiuboss.xiuboss.Mvp.activity.BalanceActivity;
@@ -91,7 +93,7 @@ public class MyFragment extends Fragment implements View.OnClickListener, Common
     private String sid;
     private Activity activity;
     private PopupWindow window;
-
+    private MyReceiver receiver;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,16 +102,21 @@ public class MyFragment extends Fragment implements View.OnClickListener, Common
         //EventBus.getDefault().register(this);
         sharedPreferences = getActivity().getSharedPreferences("login_sucess", getActivity().MODE_PRIVATE);
         initView(view);
-        isOpen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+       /* isOpen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
                 if (isChecked){
-                    registerBroadcast();
+                    if (receiver!=null){
+                        receiver.clearAbortBroadcast();
+                    }
                 }else{
-                    isOpen.setChecked(false);
+                    Log.e("------isChecked",1+"");
+                    registerBroadcast();
+
                 }
             }
-        });
+        });*/
         initData();
         return view;
 
@@ -234,7 +241,7 @@ public class MyFragment extends Fragment implements View.OnClickListener, Common
         final TextView managerName = contentView.findViewById(R.id.manager_name);
         final TextView customerServiceName = contentView.findViewById(R.id.customerservice_name);
         Button cancel = contentView.findViewById(R.id.cancel);
-        mobile.setText("0330-3576321");
+        mobile.setText("0710-3780521");
         managerMobile.setText(managerMobile1);
         manager.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -260,6 +267,7 @@ public class MyFragment extends Fragment implements View.OnClickListener, Common
                 }
             }
         });
+        window.setBackgroundDrawable(new BitmapDrawable());
         window.setOutsideTouchable(true);
         window.setTouchable(true);
         window.showAtLocation(LayoutInflater.from(getActivity()).inflate(R.layout.fragment_my, null), Gravity.BOTTOM, 0, 0);
@@ -387,6 +395,7 @@ public class MyFragment extends Fragment implements View.OnClickListener, Common
                   backgroundAlpha(1.0f);
               }
           });
+          window.setBackgroundDrawable(new BitmapDrawable());
           window.showAtLocation(LayoutInflater.from(getActivity()).inflate(R.layout.fragment_my, null), Gravity.CENTER, 0, 0);
       }
 
@@ -395,13 +404,20 @@ public class MyFragment extends Fragment implements View.OnClickListener, Common
         super.onDestroy();
         EventBus.getDefault().unregister(this);
     }
-    MyReceiver receiver;
+
 
     private void registerBroadcast() {
         // 注册广播接收者
         receiver = new MyReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction("exit_app");
-//        this.registerReceiver(receiver, filter);
+        getActivity().registerReceiver(receiver, filter);
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
     }
 }

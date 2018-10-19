@@ -7,6 +7,13 @@
     <!-- android:radius 弧形的半径 -->
     <corners android:radius="16dip" />
 
+    <padding
+        android:left="15px"
+        android:top="8px"
+        android:right="16px"
+        android:bottom="8px"
+        />
+
     <!-- padding：Button里面的文字与Button边界的间隔 -->
 
 </shape>

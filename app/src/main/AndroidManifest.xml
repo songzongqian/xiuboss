@@ -35,8 +35,7 @@
         android:name=".Application.JgApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_star72"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/application_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         tools:replace="android:theme">
@@ -53,7 +52,6 @@
         <activity android:name=".Mvp.activity.Login_RegisterActivity" />
         <activity android:name=".Mvp.activity.LoginActivity" />
         <activity android:name=".Mvp.activity.DetailsActivity" />
-        <activity android:name=".Mvp.activity.XiangQingActivity" />
         <activity android:name=".Mvp.activity.ChatActivity" />
 
         <service
@@ -78,6 +76,33 @@
         <activity android:name=".Mvp.activity.ReceivablesActivity" />
         <activity android:name=".Mvp.activity.AccountActivity" />
         <activity android:name=".Mvp.activity.CompletedActivity"></activity>
+        <!--&lt;!&ndash; Required SDK核心功能&ndash;&gt;<receiver android:name="cn.jpush.android.service.AlarmReceiver" android:exported="false"/> -->
+        <!-- User defined. For test only 用户自定义的广播接收器 -->
+        <receiver
+            android:name=".Jpush.MyReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <!-- Required 用户注册SDK的intent -->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <!-- Required 用户接收SDK消息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <!-- Required 用户接收SDK通知栏信息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                <!-- Required 用户打开自定义通知栏的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" />
+                <action android:name="cn.jpush.android.intent.CONNECTION" />
+                <!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="com.byx.xiuboss.xiuboss" />
+            </intent-filter>
+        </receiver>
+        <!-- User defined. For test only 用户自定义接收消息器,3.0.7开始支持,目前新tag/alias接口设置结果会在该广播接收器对应的方法中回调 -->
+        <receiver android:name=".Jpush.MyJPushMessageReceiver">
+        <intent-filter>
+        <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE"/>
+        <category android:name="com.byx.xiuboss.xiuboss"/>
+    </intent-filter>
+    </receiver>
     </application>
 
 </manifest>
