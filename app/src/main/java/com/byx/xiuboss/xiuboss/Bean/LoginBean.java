@@ -89,7 +89,7 @@ public class LoginBean {
         private String avatar;
         private String token;
         private int updatetime;
-        private int openid_wxapp;
+        private String openid_wxapp;
         private int agentid;
         private String jgpush;
         private String hash;
@@ -200,11 +200,11 @@ public class LoginBean {
             this.updatetime = updatetime;
         }
 
-        public int getOpenid_wxapp() {
+        public String getOpenid_wxapp() {
             return openid_wxapp;
         }
 
-        public void setOpenid_wxapp(int openid_wxapp) {
+        public void setOpenid_wxapp(String openid_wxapp) {
             this.openid_wxapp = openid_wxapp;
         }
 

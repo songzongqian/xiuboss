@@ -155,6 +155,8 @@ public class LoginController implements View.OnClickListener {
                                     String string = response.body().string();
                                     Gson gson = new Gson();
                                     Log.e("-------------------",""+string.length());
+                                    Log.e("---------string",""+string);
+
                                     if (string.length()<300){
                                         mContext.runOnUiThread(new Runnable() {
                                             @Override

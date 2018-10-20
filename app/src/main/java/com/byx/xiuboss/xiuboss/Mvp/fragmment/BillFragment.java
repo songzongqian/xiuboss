@@ -62,26 +62,16 @@ public class BillFragment extends Fragment {
     private String sid;
     private int pageIndex = 0;
     private TurnoverData data1;
-    protected boolean isCreated = false;
     private View inflate;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         inflate = inflater.inflate(R.layout.fragment_bill, container, false);
         initView(inflate);
-
+        initData();
         return inflate;
 
-    }
-    @Override
-    public void onResume() {
-        super.onResume();
-        // 标记
-        isCreated = true;
-        initView(inflate);
-        initData();
     }
 
 
@@ -252,14 +242,9 @@ public class BillFragment extends Fragment {
         });
     }
 
-
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
+    public void onResume() {
+        super.onResume();
 
-        if (!isCreated) {
-            return;
-        }
-        }
-
+    }
 }

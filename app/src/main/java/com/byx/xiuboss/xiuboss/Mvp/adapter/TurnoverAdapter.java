@@ -116,7 +116,7 @@ public class TurnoverAdapter extends RecyclerView.Adapter<TurnoverAdapter.ViewHo
                 Glide.with(context).load(listData.get(position).getAvatar()).bitmapTransform(new CropCircleTransformation(context)).into(holder.image_item_one);
             }
 
-            if (position+1 ==listData.size()-5) {
+            if (position+1 ==5) {
                 holder.text_jia.setVisibility(View.VISIBLE);
             }else{
                 holder.text_jia.setVisibility(View.GONE);
@@ -173,7 +173,12 @@ public class TurnoverAdapter extends RecyclerView.Adapter<TurnoverAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        int count = (listData == null ? 0 : listData.size()-5);
+        int count = (listData == null ? 0 : listData.size());
+
+        if (count>5){
+            count=5;
+           return ++count;
+        }
         if (VIEW_FOOTER != null) {
             count++;
         }
