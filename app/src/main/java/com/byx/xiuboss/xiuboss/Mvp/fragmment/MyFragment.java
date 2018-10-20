@@ -166,7 +166,7 @@ public class MyFragment extends Fragment implements View.OnClickListener, Common
             public void run() {
                 Gson gson = new Gson();
                 MyFragmentBean myFragmentBean = gson.fromJson(data, MyFragmentBean.class);
-                title.setText(myFragmentBean.getData().getUsername());
+                title.setText(sharedPreferences.getString("homeTitle",""));
                 mobile.setText(myFragmentBean.getData().getMobile());
                 adMinistrators.setText(myFragmentBean.getData().getUsername() + " |" + myFragmentBean.getData().getRole());
                 Glide.with(getActivity()).load(myFragmentBean.getData().getLogo()).bitmapTransform(new CropCircleTransformation(getActivity())).into(imageView);
@@ -237,7 +237,7 @@ public class MyFragment extends Fragment implements View.OnClickListener, Common
             @Override
             public void onClick(View v) {
                 window.dismiss();
-                showCallPopupWindow(customerServiceName.getText().toString(),"0330-3576321");
+                showCallPopupWindow(customerServiceName.getText().toString(),"0710-3780521");
 
             }
         });
@@ -307,7 +307,7 @@ public class MyFragment extends Fragment implements View.OnClickListener, Common
                 final TextView customerServiceName = view.findViewById(R.id.customerservice_name);
                 RelativeLayout Customerservice = view.findViewById(R.id.Customerservice);
                 Button cancel = view.findViewById(R.id.cancel);
-                mobile.setText("0330-3576321");
+                mobile.setText("0710-3780521");
                 managerMobile.setText(managerMobile1);
                 manager.setOnClickListener(new View.OnClickListener() {
                     @Override
